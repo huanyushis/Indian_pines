@@ -1,6 +1,8 @@
 import scipy.io as scio
 import numpy as np
 import random
+from sklearn.model_selection import train_test_split
+
 # 145*145*200的数据集
 indian_pines = scio.loadmat("databases/Indian_pines_corrected.mat")['indian_pines_corrected'].reshape(-1, 200)
 # 145*145的标签
@@ -27,16 +29,29 @@ for key in indexs.keys():
     les = len(indexs[key])
     # print("%d:%d" % (key, les))
     lens.append((key, les))
+# print(lens)
 # 挑选分类
 # print(lens)
-trains = []
-labels = []
+x_trains = []
+x_tests = []
+y_trains = []
+y_tests = []
 for i in lens:
-    train = [indian_pines[index] for index in random.sample(indexs[i[0]],int(i[1]*0.8))]
-    trains.extend(train)
-    labels.extend([i[0]] * len(train))
-trains = np.array(trains)
-labels = np.array(labels)
+    X = [indian_pines_gt[index] for index in indexs[i[0]]]
+    train, test ,y_train,y_test= train_test_split(X, [i[0]]*i[1], test_size=0.2)
+    x_trains.extend(train)
+    x_tests.extend(test)
+    y_trains.extend(y_train)
+    y_tests.extend(y_test)
 
-print(trains.shape)
-print(labels.shape)
+x_trains = np.array(x_trains).astype(np.float64)
+x_tests = np.array(x_tests).astype(np.float64)
+y_trains = np.array(y_trains).astype(np.float64)
+y_tests = np.array(y_tests).astype(np.float64)
+
+print(x_trains.shape)
+print(y_trains.shape)
+print(x_tests.shape)
+print(y_tests.shape)
+# print(trains.dtype)
+# print(labels.dtype)
