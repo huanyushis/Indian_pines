@@ -1,6 +1,6 @@
 import scipy.io as scio
 import numpy as np
-
+import random
 # 145*145*200的数据集
 indian_pines = scio.loadmat("databases/Indian_pines_corrected.mat")['indian_pines_corrected'].reshape(-1, 200)
 # 145*145的标签
@@ -32,11 +32,11 @@ for key in indexs.keys():
 trains = []
 labels = []
 for i in lens:
-    train =[indian_pines[index] for index in indexs[i[0]][::5]]
+    train = [indian_pines[index] for index in random.sample(indexs[i[0]],int(i[1]*0.8))]
     trains.extend(train)
-    labels.extend([i[0]]*len(train))
-trains=np.array(trains)
-labels=np.array(labels)
+    labels.extend([i[0]] * len(train))
+trains = np.array(trains)
+labels = np.array(labels)
 
 print(trains.shape)
 print(labels.shape)
