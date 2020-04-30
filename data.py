@@ -22,8 +22,7 @@ numType = len(indian_pines_labels)
 indexs = dict([(k, []) for k in indian_pines_labels])
 # 获得每个标签所对应值的索引
 for i, j in enumerate(indian_pines_gt):
-    indexs[j].append(i)
-# 查看标签个数
+    indexs[j].append(i)  # 查看标签个数
 lens = []
 for key in indexs.keys():
     les = len(indexs[key])
@@ -32,15 +31,18 @@ for key in indexs.keys():
 # print(lens)
 # 挑选分类
 # print(lens)
+x_trains_index = []
+x_tests_index = []
 x_trains = []
 x_tests = []
 y_trains = []
 y_tests = []
 for i in lens:
-    X = [indian_pines_gt[index] for index in indexs[i[0]]]
-    train, test ,y_train,y_test= train_test_split(X, [i[0]]*i[1], test_size=0.2)
-    x_trains.extend(train)
-    x_tests.extend(test)
+    train, test, y_train, y_test = train_test_split(indexs[i[0]], [i[0]] * i[1], test_size=0.2)
+    x_trains_index.extend(train)
+    x_tests_index.extend(test)
+    x_trains.extend([indian_pines[i, :] for i in train])
+    x_tests.extend([indian_pines[i, :] for i in test])
     y_trains.extend(y_train)
     y_tests.extend(y_test)
 
@@ -53,5 +55,5 @@ print(x_trains.shape)
 print(y_trains.shape)
 print(x_tests.shape)
 print(y_tests.shape)
-# print(trains.dtype)
-# print(labels.dtype)
+print(len(x_trains_index))
+print(len(x_tests_index))
