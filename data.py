@@ -87,12 +87,14 @@ print(y_vals.shape)
 # print(len(x_trains_index))
 # print(len(x_tests_index))
 inputs=Input(shape=(200,))
-y=Dense(256, activation='relu')(inputs)
-y=Dense(512, activation='relu')(y)
-y=Dropout(0.25)(y)
-y=Dense(512, activation='relu')(y)
-y=Dense(512, activation='relu')(y)
-y=Dropout(0.25)(y)
+y=Dense(1024, activation='relu')(inputs)
+y=Dropout(0.6)(y)
+y=Dense(1024, activation='relu')(y)
+y=Dropout(0.6)(y)
+y=Dense(1024, activation='relu')(y)
+y=Dropout(0.6)(y)
+y=Dense(1024, activation='relu')(y)
+y=Dropout(0.6)(y)
 output=Dense(16, activation='relu')(y)
 adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 model = Model(inputs=inputs, outputs=output)
@@ -111,8 +113,7 @@ model.fit(x_trains, y_trains,
           validation_data=(x_vals, y_vals),
           callbacks = [checkpoint],
           verbose = 2,
-          epochs=20000,
-          batch_size=20
+          epochs=20000
 )
 model.save("model.h5")
 score = model.evaluate(x_tests, y_tests, batch_size=1024)
